@@ -31,6 +31,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import {Provider} from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react'
 import configureStore from './app/Store';
+import { ApplicationProvider } from '@ui-kitten/components';
+import { mapping, light as lightTheme } from '@eva-design/eva';
 
 const {store, persistor} = configureStore();
 
@@ -54,16 +56,18 @@ const Stack = createStackNavigator();
 
 const App: () => React$Node = () => {
   return (
-    <Provider store={ store } >
-      <PersistGate loading={null} persistor={persistor}>
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Register" component={RegisterPage} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </PersistGate>
-    </Provider>
+    <ApplicationProvider mapping={mapping} theme={lightTheme}>
+      <Provider store={ store } >
+        <PersistGate loading={null} persistor={persistor}>
+          <NavigationContainer>
+            <Stack.Navigator>
+              <Stack.Screen name="Home" component={HomeScreen} />
+              <Stack.Screen name="Register" component={RegisterPage} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </PersistGate>
+      </Provider>
+    </ApplicationProvider>
   );
 };
 
