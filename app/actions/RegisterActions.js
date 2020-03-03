@@ -1,5 +1,12 @@
 import { checkStatus, parseJSON, getApiUrl, getHeaderForAjax } from '../services/ServiceHelper';
-import { REGISTER_GET_ALL_DAYAH } from '../Constants';
+import { REGISTER_INITIAL, REGISTER_GET_ALL_DAYAH, REGISTER_SUBMITTING, REGISTER_SUBMITTED } from '../Constants';
+
+
+const registerInitial = () => {
+  return async (dispatch) => {
+    dispatch({ type: REGISTER_INITIAL });
+  }
+}
 
 const getAllDayah = () => {
   return async (dispatch) => {
@@ -19,4 +26,29 @@ const getAllDayah = () => {
   }
 }
 
-export { getAllDayah }
+const submit = (registerObj) => {
+  console.log(registerObj);
+  return async (dispatch) => {
+    let apiUrl = getApiUrl() +'/register';
+    
+    dispatch({ type: REGISTER_SUBMITTING });
+
+    fetch(apiUrl, {
+      method: 'POST',
+      headers: getHeaderForAjax(),
+      body: JSON.stringify(registerObj)
+    })
+      .then(checkStatus)
+      .then(parseJSON)
+      .then((data) => {
+        console.log(data);
+        dispatch({ type: REGISTER_SUBMITTED, payload: data });
+      })
+      .catch((data) => {
+        console.log(data);
+        dispatch({ type: REGISTER_SUBMITTED, payload: data });
+      });
+  }
+}
+
+export { registerInitial, getAllDayah, submit }

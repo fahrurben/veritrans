@@ -2,8 +2,14 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { StyleSheet } from 'react-native';
 import _ from 'lodash';
-import { Layout, Input, Text, Select, Button } from '@ui-kitten/components';
-import { getAllDayah } from '../actions/RegisterActions';
+import { Layout, Input, Text, Select, Button, Popover, Spinner, Modal } from '@ui-kitten/components';
+import { registerInitial, getAllDayah, submit } from '../actions/RegisterActions';
+import {
+  SUBMITTING,
+  SUBMITTED,
+  STATUS_SUCCESS,
+  STATUS_ERROR
+} from '../Constants';
 
 class RegisterPage extends Component {
   constructor(props) {
@@ -19,13 +25,29 @@ class RegisterPage extends Component {
         nik: '',
         password: '',
         passwordKonfirmasi: ''
-      }
+      },
+      formStatus: props.formStatus
     };
 
     this.submitClick = this.submitClick.bind(this);
+    this.redirectClick = this.redirectClick.bind(this);
+  }
+
+  static getDerivedStateFromProps(nextProps, state) {
+
+    if (nextProps.formState == SUBMITTED && state.formState == SUBMITTING) {
+      if (nextProps.status == STATUS_SUCCESS) {
+        console.log('Success');
+      } else {
+
+      }
+    }
+
+    return nextProps;
   }
 
   componentDidMount() {
+    this.props.registerInitial();
     this.props.getAllDayah();
   }
 
@@ -37,34 +59,62 @@ class RegisterPage extends Component {
       passwordKonfirmasi: ''
     };
 
-    if (this.state.dayahSelected == '0') {
+    if (this.state.dayahSelected.value == '0') {
       error.dayah = 'Institusi harus dipilih';
-      this.setState({error: error});
     }
 
     if (this.state.nik == '') {
       error.nik = 'Nik harus diisi';
-      this.setState({error: error});
     }
 
     if (this.state.password == '') {
       error.password = 'Password harus diisi';
-      this.setState({error: error});
     }
 
     if (this.state.passwordKonfirmasi != this.state.password) {
       error.passwordKonfirmasi = 'Password konfirmasi dan Password tidak sama';
-      this.setState({error: error});
+    }
+
+    this.setState({error: error});
+
+    if (
+      error.dayah == '' &&
+      error.nik == '' &&
+      error.password == '' &&
+      error.passwordKonfirmasi == ''
+    ) {
+      this.props.submit({
+        dayah: this.state.dayahSelected.value,
+        nik: this.state.nik,
+        password: this.state.password,
+        passwordKonfirmasi: this.state.passwordKonfirmasi,
+      });
     }
   }
 
+  redirectClick(e) {
+    this.props.registerInitial();
+    this.props.navigation.navigate('Home');
+  }
+
   render() {
+    const PopoverContent = () => (
+      <Layout style={styles.popoverContent}>
+        <Spinner size='giant'/>
+      </Layout>
+    );
+
     let arrDayah = this.props.arrDayah && 
                     this.props.arrDayah.map( dayah => { return { value: dayah.id, text: dayah.name } });
     
+    let loading = this.props.loading;
 
     return (
       <Layout style={styles.container}>
+        {
+          this.state.status == STATUS_ERROR &&
+            <Text style={{color:'red'}}>{this.state.message}</Text>
+        }
         <Select 
           placeholder="Pilih Institusi"
           data={arrDayah}
@@ -105,9 +155,26 @@ class RegisterPage extends Component {
         <Button onPress={this.submitClick} style={styles.submitButton}>
           Submit
         </Button>
-        <Button status="basic">
+        <Button status="basic" onPress={this.redirectClick}>
           Cancel
         </Button>
+        <Popover
+          backdropStyle={styles.backdrop}
+          visible={loading}
+          content={PopoverContent()}
+        >
+          <Text></Text>
+        </Popover>
+        <Modal visible={this.state.status == STATUS_SUCCESS} backdropStyle={styles.backdrop}>
+          <Layout
+            level='3'
+            style={styles.modalContainer}>
+            <Text>{this.state.message}</Text>
+            <Button onPress={this.redirectClick}>
+              OK
+            </Button>
+          </Layout>
+        </Modal>
       </Layout>
     );
   }
@@ -122,16 +189,31 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     marginBottom: 5,
-  }
+  },
+  backdrop: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 256,
+    padding: 16,
+  },
 });
 
 const mapStateToProps = state => ({
-  arrDayah: state.register.arrDayah
+  arrDayah: state.register.arrDayah,
+  loading: state.register.loading,
+  formState: state.register.formState,
+  status: state.register.status,
+  message: state.register.message,
 })
 
 export default connect(
   mapStateToProps,
   { 
-    getAllDayah, 
+    registerInitial,
+    getAllDayah,
+    submit
   }
 )(RegisterPage);

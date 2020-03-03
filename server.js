@@ -14,10 +14,20 @@ export function makeServer({ environment = "development" } = {}) {
     },
 
     routes() {
-      this.namespace = "api"
+      this.namespace = "api";
 
       this.get("/dayahs", schema => {
-        return schema.dayahs.all()
+        return schema.dayahs.all();
+      });
+
+      this.post("/register", (schema, request) => {
+        let requestObj = JSON.parse(request.requestBody);
+      
+        if (requestObj.nik == '123') {
+          return { status: 'error', message: 'Akun dengan nik ' + requestObj.nik + ' sudah ada'};
+        }
+
+        return { status: 'success', message: 'Akun berhasil dibuat, silahkan login dengan NIK dan Password yang sudah disubmit' };
       })
     },
   })
