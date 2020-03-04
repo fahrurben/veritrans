@@ -122,7 +122,10 @@ class RegisterPage extends Component {
           onSelect={
             (data) => {
               let index = _.findIndex(arrDayah, (obj) => { return obj.id == data.id });
-              this.setState({dayahSelected: arrDayah[index]});
+              this.setState({
+                dayahSelected: arrDayah[index],
+                error: { ...this.state.error, dayah: '' }
+              });
             }
           }
           status={this.state.error.dayah == '' ? '' : 'danger'}
@@ -132,7 +135,12 @@ class RegisterPage extends Component {
         <Input 
           placeholder="NIK Siswa"
           value={this.state.nik}
-          onChangeText={text => this.setState({ nik: text })}
+          onChangeText={
+            text => this.setState({ 
+              nik: text,
+              error: { ...this.state.error, nik: '' }
+            })
+          }
           status={this.state.error.nik == '' ? '' : 'danger'}
           caption={this.state.error.nik}
         />
@@ -140,7 +148,12 @@ class RegisterPage extends Component {
           placeholder="Password"
           secureTextEntry={true}
           value={this.state.password}
-          onChangeText={text => this.setState({ password: text })}
+          onChangeText={
+            text => this.setState({ 
+              password: text,
+              error: { ...this.state.error, password: '' }
+            })
+          }
           status={this.state.error.password == '' ? '' : 'danger'}
           caption={this.state.error.password}
         />
@@ -148,7 +161,12 @@ class RegisterPage extends Component {
           placeholder="Password Konfirmasi"
           secureTextEntry={true}
           value={this.state.passwordKonfirmasi}
-          onChangeText={text => this.setState({ passwordKonfirmasi: text })}
+          onChangeText={
+            text => this.setState({ 
+              password: passwordKonfirmasi,
+              error: { ...this.state.error, passwordKonfirmasi:'' }
+            })
+          }
           status={this.state.error.passwordKonfirmasi == '' ? '' : 'danger'}
           caption={this.state.error.passwordKonfirmasi}
         />
