@@ -28,7 +28,17 @@ export function makeServer({ environment = "development" } = {}) {
         }
 
         return { status: 'success', message: 'Akun berhasil dibuat, silahkan login dengan NIK dan Password yang sudah disubmit' };
-      })
+      });
+
+      this.post("/login", (schema, request) => {
+        let requestObj = JSON.parse(request.requestBody);
+      
+        if (requestObj.nik == '123') {
+          return { status: 'error', message: 'NIK atau Password salah'};
+        }
+
+        return { status: 'success', message: 'Login success', token: '123' }
+      });
     },
   })
 

@@ -37,6 +37,7 @@ import { mapping, light as lightTheme } from '@eva-design/eva';
 const {store, persistor} = configureStore();
 
 import RegisterPage from './app/pages/RegisterPage';
+import LoginPage from './app/pages/LoginPage';
 
 function HomeScreen(props) {
   return (
@@ -46,6 +47,10 @@ function HomeScreen(props) {
         <Button
           title="Register"
           onPress={() =>props.navigation.navigate('Register')}
+        />
+        <Button
+          title="Login"
+          onPress={() =>props.navigation.navigate('Login')}
         />
       </View>
     </View>
@@ -63,6 +68,7 @@ const App: () => React$Node = () => {
             <Stack.Navigator>
               <Stack.Screen name="Home" component={HomeScreen} />
               <Stack.Screen name="Register" component={RegisterPage} />
+              <Stack.Screen name="Login" component={LoginPage} />
             </Stack.Navigator>
           </NavigationContainer>
         </PersistGate>
