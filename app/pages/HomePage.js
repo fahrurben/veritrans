@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import _ from 'lodash';
 import { Layout, Input, Text, Select, Button, Popover, Spinner, Modal } from '@ui-kitten/components';
 import { styles } from '../Styles';
-import { checkAuthenticated } from '../services/Auth';
+import { checkAuthenticated, logout } from '../services/Auth';
 import {
   SUBMITTING,
   SUBMITTED,
@@ -19,6 +19,8 @@ class HomePage extends Component {
     this.state = {
       isAuthenticated: false
     };
+
+    this.logoutClicked = this.logoutClicked.bind(this);
   }
 
   async componentDidMount() {
@@ -27,6 +29,12 @@ class HomePage extends Component {
       isAuthenticated = await checkAuthenticated();
       this.setState({isAuthenticated: isAuthenticated});
     } catch (e) { }
+  }
+
+  async logoutClicked() {
+    await logout();
+    
+    this.setState({isAuthenticated: false});
   }
 
   render() {
@@ -52,7 +60,7 @@ class HomePage extends Component {
             <Button onPress={() =>this.props.navigation.navigate('TransactionConfirmation')}>
               Konfirmasi Transfer
             </Button>
-            <Button status="basic" onPress={() =>this.props.navigation.navigate('Register')}>
+            <Button status="basic" onPress={this.logoutClicked}>
               Logout
             </Button>
           </Layout>
