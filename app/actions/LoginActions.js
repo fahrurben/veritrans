@@ -49,7 +49,6 @@ const submit = (loginObj) => {
           await setSession(data.token);
         }
 
-        console.log(data);
         dispatch({ type: LOGIN_SUBMITTED, payload: data });
       }
     } catch (error) {

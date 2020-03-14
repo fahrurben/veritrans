@@ -24,7 +24,7 @@ export async function logout() {
 }
 
 // checks if the user is authenticated
-export async function isAuthenticated() {
+export async function checkAuthenticated() {
   // Check whether the current time is past the
   // access token's expiry time
   try {

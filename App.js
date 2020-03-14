@@ -38,24 +38,7 @@ const {store, persistor} = configureStore();
 
 import RegisterPage from './app/pages/RegisterPage';
 import LoginPage from './app/pages/LoginPage';
-
-function HomeScreen(props) {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home Screen</Text>
-      <View>
-        <Button
-          title="Register"
-          onPress={() =>props.navigation.navigate('Register')}
-        />
-        <Button
-          title="Login"
-          onPress={() =>props.navigation.navigate('Login')}
-        />
-      </View>
-    </View>
-  );
-}
+import HomePage from './app/pages/HomePage';
 
 const Stack = createStackNavigator();
 
@@ -66,7 +49,7 @@ const App: () => React$Node = () => {
         <PersistGate loading={null} persistor={persistor}>
           <NavigationContainer>
             <Stack.Navigator>
-              <Stack.Screen name="Home" component={HomeScreen} />
+              <Stack.Screen name="Home" component={HomePage} />
               <Stack.Screen name="Register" component={RegisterPage} />
               <Stack.Screen name="Login" component={LoginPage} />
             </Stack.Navigator>

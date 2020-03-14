@@ -41,11 +41,9 @@ const submit = (registerObj) => {
       .then(checkStatus)
       .then(parseJSON)
       .then((data) => {
-        console.log(data);
         dispatch({ type: REGISTER_SUBMITTED, payload: data });
       })
       .catch((data) => {
-        console.log(data);
         dispatch({ type: REGISTER_SUBMITTED, payload: data });
       });
   }
