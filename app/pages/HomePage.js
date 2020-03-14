@@ -49,8 +49,8 @@ class HomePage extends Component {
         {
           isAuthenticated &&
           <Layout>
-            <Button onPress={() =>this.props.navigation.navigate('Register')}>
-              Transaksi
+            <Button onPress={() =>this.props.navigation.navigate('TransactionConfirmation')}>
+              Konfirmasi Transfer
             </Button>
             <Button status="basic" onPress={() =>this.props.navigation.navigate('Register')}>
               Logout

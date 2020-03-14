@@ -6,11 +6,14 @@ export function makeServer({ environment = "development" } = {}) {
 
     models: {
       dayah: Model,
+      bankAccount: Model,
     },
 
     seeds(server) {
       server.create("dayah", { id: 1, name: "Dayah 1" })
       server.create("dayah", { id: 2, name: "Dayah 2" })
+      server.create("bankAccount", { code: '1', name: "Bank 1" })
+      server.create("bankAccount", { code: '2', name: "Bank 2" })
     },
 
     routes() {
@@ -37,7 +40,17 @@ export function makeServer({ environment = "development" } = {}) {
           return { status: 'error', message: 'NIK atau Password salah'};
         }
 
-        return { status: 'success', message: 'Login success', token: '123' }
+        return { status: 'success', message: 'Login sukses', token: '123' }
+      });
+
+      this.get("/bank", schema => {
+        return schema.bankAccounts.all();
+      });
+
+      this.post("/transaksi", (schema, request) => {
+        let requestObj = JSON.parse(request.requestBody);
+
+        return { status: 'success', message: 'Transaksi telah disubmit' }
       });
     },
   })

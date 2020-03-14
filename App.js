@@ -26,7 +26,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import {Provider} from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react'
@@ -39,6 +39,7 @@ const {store, persistor} = configureStore();
 import RegisterPage from './app/pages/RegisterPage';
 import LoginPage from './app/pages/LoginPage';
 import HomePage from './app/pages/HomePage';
+import TransactionConfirmationPage from './app/pages/TransactionConfirmationPage';
 
 const Stack = createStackNavigator();
 
@@ -52,6 +53,7 @@ const App: () => React$Node = () => {
               <Stack.Screen name="Home" component={HomePage} />
               <Stack.Screen name="Register" component={RegisterPage} />
               <Stack.Screen name="Login" component={LoginPage} />
+              <Stack.Screen name="TransactionConfirmation" component={TransactionConfirmationPage} />
             </Stack.Navigator>
           </NavigationContainer>
         </PersistGate>
