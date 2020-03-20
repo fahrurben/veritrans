@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { StyleSheet } from 'react-native';
 import _ from 'lodash';
 import { Layout, Input, Text, Select, Button, Popover, Spinner, Modal } from '@ui-kitten/components';
-import { registerInitial, getAllDayah, submit } from '../actions/RegisterActions';
+import { registerInitial, getAllInstitusi, submit } from '../actions/RegisterActions';
 import {
   SUBMITTING,
   SUBMITTED,
@@ -16,13 +16,15 @@ class RegisterPage extends Component {
     super(props);
 
     this.state = {
-      dayahSelected: '0',
+      institusiSelected: '0',
       nik: '',
+      hp: '',
       password: '',
       passwordKonfirmasi: '',
       error: {
-        dayah: '',
+        institusi: '',
         nik: '',
+        hp: '',
         password: '',
         passwordKonfirmasi: ''
       },
@@ -48,23 +50,28 @@ class RegisterPage extends Component {
 
   componentDidMount() {
     this.props.registerInitial();
-    this.props.getAllDayah();
+    this.props.getAllInstitusi();
   }
 
   submitClick(e) {
     let error = {
-      dayah: '',
+      institusi: '',
       nik: '',
+      hp: '',
       password: '',
       passwordKonfirmasi: ''
     };
 
-    if (this.state.dayahSelected.value == '0') {
-      error.dayah = 'Institusi harus dipilih';
+    if (this.state.institusiSelected.value == '0') {
+      error.institusi = 'Institusi harus dipilih';
     }
 
     if (this.state.nik == '') {
       error.nik = 'Nik harus diisi';
+    }
+
+    if (this.state.hp == '') {
+      error.hp = 'HP harus diisi';
     }
 
     if (this.state.password == '') {
@@ -78,14 +85,16 @@ class RegisterPage extends Component {
     this.setState({error: error});
 
     if (
-      error.dayah == '' &&
+      error.institusi == '' &&
       error.nik == '' &&
+      error.hp == '' &&
       error.password == '' &&
       error.passwordKonfirmasi == ''
     ) {
       this.props.submit({
-        dayah: this.state.dayahSelected.value,
+        institusi_id: this.state.institusiSelected.value,
         nik: this.state.nik,
+        hp: this.state.hp,
         password: this.state.password,
         passwordKonfirmasi: this.state.passwordKonfirmasi,
       });
@@ -104,8 +113,9 @@ class RegisterPage extends Component {
       </Layout>
     );
 
-    let arrDayah = this.props.arrDayah && 
-                    this.props.arrDayah.map( dayah => { return { value: dayah.id, text: dayah.name } });
+    let arrInstitusi = this.props.arrInstitusi &&
+                    this.props.arrInstitusi.length > 0 &&
+                    this.props.arrInstitusi.map( institusi => { return { value: institusi.id, text: institusi.name } });
     
     let loading = this.props.loading;
 
@@ -117,19 +127,19 @@ class RegisterPage extends Component {
         }
         <Select 
           placeholder="Pilih Institusi"
-          data={arrDayah}
-          selectedOption={this.state.dayahSelected}
+          data={arrInstitusi}
+          selectedOption={this.state.institusiSelected}
           onSelect={
             (data) => {
-              let index = _.findIndex(arrDayah, (obj) => { return obj.id == data.id });
+              let index = _.findIndex(arrInstitusi, (obj) => { return obj.id == data.id });
               this.setState({
-                dayahSelected: arrDayah[index],
-                error: { ...this.state.error, dayah: '' }
+                institusiSelected: arrInstitusi[index],
+                error: { ...this.state.error, institusi: '' }
               });
             }
           }
-          status={this.state.error.dayah == '' ? '' : 'danger'}
-          caption={this.state.error.dayah}
+          status={this.state.error.institusi == '' ? '' : 'danger'}
+          caption={this.state.error.institusi}
           style={styles.select}
         />
         <Input 
@@ -143,6 +153,18 @@ class RegisterPage extends Component {
           }
           status={this.state.error.nik == '' ? '' : 'danger'}
           caption={this.state.error.nik}
+        />
+        <Input 
+          placeholder="Nomor HP"
+          value={this.state.hp}
+          onChangeText={
+            text => this.setState({ 
+              hp: text,
+              error: { ...this.state.error, hp: '' }
+            })
+          }
+          status={this.state.error.hp == '' ? '' : 'danger'}
+          caption={this.state.error.hp}
         />
         <Input 
           placeholder="Password"
@@ -163,7 +185,7 @@ class RegisterPage extends Component {
           value={this.state.passwordKonfirmasi}
           onChangeText={
             text => this.setState({ 
-              password: passwordKonfirmasi,
+              passwordKonfirmasi: text,
               error: { ...this.state.error, passwordKonfirmasi:'' }
             })
           }
@@ -220,7 +242,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  arrDayah: state.register.arrDayah,
+  arrInstitusi: state.register.arrInstitusi,
   loading: state.register.loading,
   formState: state.register.formState,
   status: state.register.status,
@@ -231,7 +253,7 @@ export default connect(
   mapStateToProps,
   { 
     registerInitial,
-    getAllDayah,
+    getAllInstitusi,
     submit
   }
 )(RegisterPage);

@@ -5,16 +5,16 @@ export function makeServer({ environment = "development" } = {}) {
     environment,
 
     models: {
-      dayah: Model,
+      institusi: Model,
       bankAccount: Model,
       transaction: Model
     },
 
     seeds(server) {
-      server.create("dayah", { id: 1, name: "Dayah 1" })
-      server.create("dayah", { id: 2, name: "Dayah 2" })
-      server.create("bankAccount", { code: '1', name: "Bank 1" })
-      server.create("bankAccount", { code: '2', name: "Bank 2" })
+      server.create("institusi", { id: 1, name: "Dayah 1" })
+      server.create("institusi", { id: 2, name: "Dayah 2" })
+      server.create("bankAccount", { id: 1, institusi_id: 1, name: "Bank 1" })
+      server.create("bankAccount", { id: 2, institusi_id: 1, name: "Bank 2" })
       server.create("transaction", { 
         id: '1', 
         bank: '1',
@@ -27,8 +27,23 @@ export function makeServer({ environment = "development" } = {}) {
     routes() {
       this.namespace = "api";
 
-      this.get("/dayahs", schema => {
-        return schema.dayahs.all();
+      this.get("/institusi", schema => {
+        return [
+          {
+            "id": 1,
+            "name": "Test",
+            "deleted_at": null,
+            "created_at": null,
+            "updated_at": null
+          },
+          {
+            "id": 2,
+            "name": "Test2",
+            "deleted_at": null,
+            "created_at": null,
+            "updated_at": null
+          }
+        ];
       });
 
       this.post("/register", (schema, request) => {
@@ -51,7 +66,7 @@ export function makeServer({ environment = "development" } = {}) {
         return { status: 'success', message: 'Login sukses', token: '123' }
       });
 
-      this.get("/bank", schema => {
+      this.get("/institusi/bank", schema => {
         return schema.bankAccounts.all();
       });
 

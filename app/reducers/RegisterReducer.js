@@ -1,6 +1,6 @@
 import { 
   REGISTER_INITIAL,
-  REGISTER_GET_ALL_DAYAH, 
+  REGISTER_GET_ALL_INSTITUSI, 
   REGISTER_SUBMITTING, 
   REGISTER_SUBMITTED, 
   STATUS_SUCCESS,
@@ -9,7 +9,7 @@ import {
 } from '../Constants';
 
 const initialState = {
-  arrDayah: [],
+  arrInstitusi: [],
   loading: false,
   formState: '',
   status: STATUS_SUCCESS,
@@ -26,10 +26,10 @@ function reducer(state = initialState, action) {
         status: null,
         message: ''
       }
-    case REGISTER_GET_ALL_DAYAH:
+    case REGISTER_GET_ALL_INSTITUSI:
       return {
         ...state,
-        arrDayah: action.payload,
+        arrInstitusi: action.payload,
       }
     case REGISTER_SUBMITTING:
       return {

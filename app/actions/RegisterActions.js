@@ -1,5 +1,5 @@
 import { checkStatus, parseJSON, getApiUrl, getHeaderForAjax } from '../services/ServiceHelper';
-import { REGISTER_INITIAL, REGISTER_GET_ALL_DAYAH, REGISTER_SUBMITTING, REGISTER_SUBMITTED } from '../Constants';
+import { REGISTER_INITIAL, REGISTER_GET_ALL_INSTITUSI, REGISTER_SUBMITTING, REGISTER_SUBMITTED } from '../Constants';
 
 
 const registerInitial = () => {
@@ -8,9 +8,9 @@ const registerInitial = () => {
   }
 }
 
-const getAllDayah = () => {
+const getAllInstitusi = () => {
   return async (dispatch) => {
-    let apiUrl = getApiUrl() +'/dayahs';
+    let apiUrl = getApiUrl() +'/institusi';
     fetch(apiUrl, {
       method: 'GET',
       headers: getHeaderForAjax(),
@@ -18,10 +18,10 @@ const getAllDayah = () => {
       .then(checkStatus)
       .then(parseJSON)
       .then((data) => {
-        dispatch({ type: REGISTER_GET_ALL_DAYAH, payload: data.dayahs });
+        dispatch({ type: REGISTER_GET_ALL_INSTITUSI, payload: data });
       })
       .catch((error) => {
-        dispatch({ type: REGISTER_GET_ALL_DAYAH, payload: { isSuccess: false, message: error.message } });
+        dispatch({ type: REGISTER_GET_ALL_INSTITUSI, payload: { isSuccess: false, message: error.message } });
       });
   }
 }
@@ -49,4 +49,4 @@ const submit = (registerObj) => {
   }
 }
 
-export { registerInitial, getAllDayah, submit }
+export { registerInitial, getAllInstitusi, submit }
