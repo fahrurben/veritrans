@@ -1,6 +1,6 @@
 import { 
   LOGIN_INITIAL,
-  LOGIN_GET_ALL_DAYAH, 
+  LOGIN_GET_INSTITUSI, 
   LOGIN_SUBMITTING, 
   LOGIN_SUBMITTED, 
   STATUS_SUCCESS,
@@ -26,7 +26,7 @@ function reducer(state = initialState, action) {
         status: null,
         message: ''
       }
-    case LOGIN_GET_ALL_DAYAH:
+    case LOGIN_GET_INSTITUSI:
       return {
         ...state,
         arrDayah: action.payload,

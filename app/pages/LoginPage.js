@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import _ from 'lodash';
 import { Layout, Input, Text, Select, Button, Popover, Spinner, Modal } from '@ui-kitten/components';
 import { styles } from '../Styles';
-import { loginInitial, getAllDayah, submit } from '../actions/LoginActions';
+import { loginInitial, submit } from '../actions/LoginActions';
 import {
   SUBMITTING,
   SUBMITTED,
@@ -17,12 +17,10 @@ class LoginPage extends Component {
     super(props);
 
     this.state = {
-      dayahSelected: '0',
-      nik: '',
+      hp: '',
       password: '',
       error: {
-        dayah: '',
-        nik: '',
+        hp: '',
         password: '',
       },
       formStatus: props.formStatus
@@ -33,7 +31,6 @@ class LoginPage extends Component {
 
   componentDidMount() {
     this.props.loginInitial();
-    this.props.getAllDayah();
   }
 
   static getDerivedStateFromProps(nextProps, state) {
@@ -51,18 +48,12 @@ class LoginPage extends Component {
 
   submitClick(e) {
     let error = {
-      dayah: '',
-      nik: '',
+      hp: '',
       password: '',
-      passwordKonfirmasi: ''
     };
 
-    if (this.state.dayahSelected.value == '0') {
-      error.dayah = 'Institusi harus dipilih';
-    }
-
-    if (this.state.nik == '') {
-      error.nik = 'Nik harus diisi';
+    if (this.state.hp == '') {
+      error.hp = 'No HP harus diisi';
     }
 
     if (this.state.password == '') {
@@ -72,14 +63,11 @@ class LoginPage extends Component {
     this.setState({error: error});
 
     if (
-      error.dayah == '' &&
-      error.nik == '' &&
-      error.password == '' &&
-      error.passwordKonfirmasi == ''
+      error.hp == '' &&
+      error.password == ''
     ) {
       this.props.submit({
-        dayah: this.state.dayahSelected.value,
-        nik: this.state.nik,
+        hp: this.state.hp,
         password: this.state.password,
       });
     }
@@ -92,9 +80,6 @@ class LoginPage extends Component {
       </Layout>
     );
 
-    let arrDayah = this.props.arrDayah && 
-                    this.props.arrDayah.map( dayah => { return { value: dayah.id, text: dayah.name } });
-    
     let loading = this.props.loading;
 
     return (
@@ -103,34 +88,17 @@ class LoginPage extends Component {
           this.state.status == STATUS_ERROR &&
             <Text style={{color:'red'}}>{this.state.message}</Text>
         }
-        <Select 
-          placeholder="Pilih Institusi"
-          data={arrDayah}
-          selectedOption={this.state.dayahSelected}
-          onSelect={
-            (data) => {
-              let index = _.findIndex(arrDayah, (obj) => { return obj.id == data.id });
-              this.setState({
-                dayahSelected: arrDayah[index],
-                error: { ...this.state.error, dayah: '' }
-              });
-            }
-          }
-          status={this.state.error.dayah == '' ? '' : 'danger'}
-          caption={this.state.error.dayah}
-          style={styles.select}
-        />
         <Input 
-          placeholder="NIK Siswa"
-          value={this.state.nik}
+          placeholder="Nomor HP"
+          value={this.state.hp}
           onChangeText={
             text => this.setState({ 
-              nik: text,
-              error: { ...this.state.error, nik: '' }
+              hp: text,
+              error: { ...this.state.error, hp: '' }
             })
           }
-          status={this.state.error.nik == '' ? '' : 'danger'}
-          caption={this.state.error.nik}
+          status={this.state.error.hp == '' ? '' : 'danger'}
+          caption={this.state.error.hp}
         />
         <Input 
           placeholder="Password"
@@ -171,7 +139,6 @@ class LoginPage extends Component {
 }
 
 const mapStateToProps = state => ({
-  arrDayah: state.login.arrDayah,
   loading: state.login.loading,
   formState: state.login.formState,
   status: state.login.status,
@@ -182,7 +149,6 @@ export default connect(
   mapStateToProps,
   { 
     loginInitial,
-    getAllDayah,
     submit
   }
 )(LoginPage);

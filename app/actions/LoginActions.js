@@ -1,5 +1,5 @@
 import { checkStatus, parseJSON, getApiUrl, getHeaderForAjax } from '../services/ServiceHelper';
-import { LOGIN_INITIAL, LOGIN_GET_ALL_DAYAH, LOGIN_SUBMITTING, LOGIN_SUBMITTED } from '../Constants';
+import { LOGIN_INITIAL, LOGIN_GET_INSTITUSI, LOGIN_SUBMITTING, LOGIN_SUBMITTED } from '../Constants';
 import { STATUS_SUCCESS, STATUS_ERROR } from '../Constants';
 import { setSession } from '../services/Auth';
 
@@ -10,9 +10,9 @@ const loginInitial = () => {
   }
 }
 
-const getAllDayah = () => {
+const getAllInstitusi = () => {
   return async (dispatch) => {
-    let apiUrl = getApiUrl() +'/dayahs';
+    let apiUrl = getApiUrl() +'/institusi';
     fetch(apiUrl, {
       method: 'GET',
       headers: getHeaderForAjax(),
@@ -20,10 +20,10 @@ const getAllDayah = () => {
       .then(checkStatus)
       .then(parseJSON)
       .then((data) => {
-        dispatch({ type: LOGIN_GET_ALL_DAYAH, payload: data.dayahs });
+        dispatch({ type: LOGIN_GET_INSTITUSI, payload: data });
       })
       .catch((error) => {
-        dispatch({ type: LOGIN_GET_ALL_DAYAH, payload: { isSuccess: false, message: error.message } });
+        dispatch({ type: LOGIN_GET_INSTITUSI, payload: { isSuccess: false, message: error.message } });
       });
   }
 }
@@ -57,4 +57,4 @@ const submit = (loginObj) => {
   }
 }
 
-export { loginInitial, getAllDayah, submit }
+export { loginInitial, getAllInstitusi, submit }
