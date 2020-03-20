@@ -45,6 +45,7 @@ import TransactionListPage from './app/pages/TransactionListPage';
 const Stack = createStackNavigator();
 
 const App: () => React$Node = () => {
+
   return (
     <ApplicationProvider mapping={mapping} theme={lightTheme}>
       <Provider store={ store } >

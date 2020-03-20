@@ -4,41 +4,34 @@ import { StyleSheet } from 'react-native';
 import _ from 'lodash';
 import { Layout, Input, Text, Select, Button, Popover, Spinner, Modal } from '@ui-kitten/components';
 import { styles } from '../Styles';
-import { checkAuthenticated, logout } from '../services/Auth';
+
 import {
-  SUBMITTING,
-  SUBMITTED,
-  STATUS_SUCCESS,
-  STATUS_ERROR
+  LOGOUT
 } from '../Constants';
+
+const logout = () => {
+  return async (dispatch) => {
+    dispatch({ type: LOGOUT });
+  }
+};
 
 class HomePage extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      isAuthenticated: false
-    };
+    this.state = {};
 
     this.logoutClicked = this.logoutClicked.bind(this);
   }
 
-  async componentDidMount() {
-    let isAuthenticated = false;
-    try {
-      isAuthenticated = await checkAuthenticated();
-      this.setState({isAuthenticated: isAuthenticated});
-    } catch (e) { }
-  }
+  logoutClicked() {
 
-  async logoutClicked() {
-    await logout();
-    
-    this.setState({isAuthenticated: false});
+    this.props.logout();
+    this.props.navigation.navigate('Home');
   }
 
   render() {
-    let isAuthenticated = this.state.isAuthenticated;
+    let isAuthenticated = this.props.isAuthenticated;
 
     return (
       <Layout style={styles.container}>
@@ -73,4 +66,13 @@ class HomePage extends Component {
   }
 }
 
-export default HomePage;
+const mapStateToProps = state => ({
+  isAuthenticated: state.global.isAuthenticated,
+})
+
+export default connect(
+  mapStateToProps,
+  {
+    logout: logout,
+  }
+)(HomePage);

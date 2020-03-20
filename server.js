@@ -63,7 +63,7 @@ export function makeServer({ environment = "development" } = {}) {
           return { status: 'error', message: 'NIK atau Password salah'};
         }
 
-        return { status: 'success', message: 'Login sukses', token: '123' }
+        return { status: 'success', message: 'Login sukses', api_token: '123' }
       });
 
       this.get("/institusi/bank", schema => {

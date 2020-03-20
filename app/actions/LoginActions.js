@@ -1,8 +1,7 @@
 import { checkStatus, parseJSON, getApiUrl, getHeaderForAjax } from '../services/ServiceHelper';
 import { LOGIN_INITIAL, LOGIN_GET_INSTITUSI, LOGIN_SUBMITTING, LOGIN_SUBMITTED } from '../Constants';
 import { STATUS_SUCCESS, STATUS_ERROR } from '../Constants';
-import { setSession } from '../services/Auth';
-
+import { AsyncStorage } from 'react-native';
 
 const loginInitial = () => {
   return async (dispatch) => {
@@ -46,7 +45,7 @@ const submit = (loginObj) => {
       if( response.status >= 200 && response.status < 300 ) {
         let data = await response.json();
         if (data.status == STATUS_SUCCESS) {
-          await setSession(data.token);
+          await AsyncStorage.setItem('accessToken', data.api_token);
         }
 
         dispatch({ type: LOGIN_SUBMITTED, payload: data });

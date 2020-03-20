@@ -4,6 +4,7 @@ export const STATUS_SUCCESS = 'success';
 export const STATUS_ERROR = 'error';
 export const SUBMITTING = 'SUBMITTING';
 export const SUBMITTED = 'SUBMITTED';
+export const LOGOUT = 'LOGOUT';
 
 export const REGISTER_INITIAL = 'REGISTER_INITIAL';
 export const REGISTER_GET_ALL_INSTITUSI = 'REGISTER_GET_ALL_INSTITUSI';
