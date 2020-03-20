@@ -60,6 +60,9 @@ class HomePage extends Component {
             <Button onPress={() =>this.props.navigation.navigate('TransactionConfirmation')}>
               Konfirmasi Transfer
             </Button>
+            <Button onPress={() =>this.props.navigation.navigate('TransactionList')}>
+              Daftar Transaksi
+            </Button>
             <Button status="basic" onPress={this.logoutClicked}>
               Logout
             </Button>

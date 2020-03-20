@@ -7,6 +7,7 @@ export function makeServer({ environment = "development" } = {}) {
     models: {
       dayah: Model,
       bankAccount: Model,
+      transaction: Model
     },
 
     seeds(server) {
@@ -14,6 +15,13 @@ export function makeServer({ environment = "development" } = {}) {
       server.create("dayah", { id: 2, name: "Dayah 2" })
       server.create("bankAccount", { code: '1', name: "Bank 1" })
       server.create("bankAccount", { code: '2', name: "Bank 2" })
+      server.create("transaction", { 
+        id: '1', 
+        bank: '1',
+        bankName: 'Mandiri',
+        nominal: 100,
+        tanggal: new Date()
+      })
     },
 
     routes() {
@@ -51,6 +59,10 @@ export function makeServer({ environment = "development" } = {}) {
         let requestObj = JSON.parse(request.requestBody);
 
         return { status: 'success', message: 'Transaksi telah disubmit' }
+      });
+
+      this.get("/transaction", schema => {
+        return schema.transactions.all();
       });
     },
   })

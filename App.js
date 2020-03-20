@@ -40,6 +40,7 @@ import RegisterPage from './app/pages/RegisterPage';
 import LoginPage from './app/pages/LoginPage';
 import HomePage from './app/pages/HomePage';
 import TransactionConfirmationPage from './app/pages/TransactionConfirmationPage';
+import TransactionListPage from './app/pages/TransactionListPage';
 
 const Stack = createStackNavigator();
 
@@ -54,6 +55,7 @@ const App: () => React$Node = () => {
               <Stack.Screen name="Register" component={RegisterPage} />
               <Stack.Screen name="Login" component={LoginPage} />
               <Stack.Screen name="TransactionConfirmation" component={TransactionConfirmationPage} />
+              <Stack.Screen name="TransactionList" component={TransactionListPage} />
             </Stack.Navigator>
           </NavigationContainer>
         </PersistGate>
