@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { StyleSheet } from 'react-native';
 import _ from 'lodash';
-import { Layout, Input, Text, Select, Button, Popover, Spinner, Modal } from '@ui-kitten/components';
+import moment from 'moment';
+moment.locale('id');
+import { Layout, Input, Text, Select, Button, Popover, Spinner, Modal, ListItem } from '@ui-kitten/components';
 import { styles } from '../Styles';
+import { getAllData } from '../actions/HomeActions';
 
 import {
   LOGOUT
@@ -30,8 +33,13 @@ class HomePage extends Component {
     this.props.navigation.navigate('Home');
   }
 
+  componentDidMount() {
+    this.props.getAllData();
+  }
+
   render() {
     let isAuthenticated = this.props.isAuthenticated;
+    let arrTransaction = this.props.arrTransaction;
 
     return (
       <Layout style={styles.container}>
@@ -53,12 +61,34 @@ class HomePage extends Component {
             <Button onPress={() =>this.props.navigation.navigate('TransactionConfirmation')}>
               Konfirmasi Transfer
             </Button>
-            <Button onPress={() =>this.props.navigation.navigate('TransactionList')}>
-              Daftar Transaksi
-            </Button>
             <Button status="basic" onPress={this.logoutClicked}>
               Logout
             </Button>
+            <Text category='h5'>Daftar Transaksi</Text>
+            {
+              arrTransaction &&
+              arrTransaction.length > 0 &&
+              arrTransaction.map((trans, key) => {
+                var dateObj = moment(trans.date);
+                var dateFormatted = dateObj.format("DD/MM/YYYY, hh:mm");
+                var nominalFormatted = trans.nominal.toFixed(2);
+                /**
+                 * Todo: 
+                 * - Format nominal need to enhance
+                 * - Status need to change to status name
+                 */
+
+                return (
+                  <ListItem key={key}>
+                    <Layout>
+                      <Text category='h6'>Transfer {dateFormatted}, Rp {nominalFormatted}</Text>
+                      <Text category='p1'>{trans.bank_name}</Text>
+                      <Text category='p1'>{trans.status}</Text>
+                    </Layout>
+                  </ListItem>
+                );
+              })
+            }
           </Layout>
         }
       </Layout>
@@ -68,11 +98,14 @@ class HomePage extends Component {
 
 const mapStateToProps = state => ({
   isAuthenticated: state.global.isAuthenticated,
+  arrTransaction: state.home.arrTransaction,
+  loading: state.home.loading,
 })
 
 export default connect(
   mapStateToProps,
   {
     logout: logout,
+    getAllData: getAllData,
   }
 )(HomePage);

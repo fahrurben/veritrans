@@ -77,7 +77,17 @@ export function makeServer({ environment = "development" } = {}) {
       });
 
       this.get("/transaction", schema => {
-        return schema.transactions.all();
+        return [
+          {
+            "id": 1,
+            "bank_name": "Test",
+            "date": "2010-01-01 00:00:00",
+            "nominal": 1000000,
+            "deleted_at": null,
+            "created_at": null,
+            "updated_at": null
+          },
+        ];
       });
     },
   })
