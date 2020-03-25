@@ -37,6 +37,10 @@ class HomePage extends Component {
     this.props.getAllData();
   }
 
+  static getDerivedStateFromProps(nextProps, state) {
+    console.log('change page');
+  }
+
   render() {
     let isAuthenticated = this.props.isAuthenticated;
     let arrTransaction = this.props.arrTransaction;
@@ -70,8 +74,8 @@ class HomePage extends Component {
               arrTransaction.length > 0 &&
               arrTransaction.map((trans, key) => {
                 var dateObj = moment(trans.date);
-                var dateFormatted = dateObj.format("DD/MM/YYYY, hh:mm");
-                var nominalFormatted = trans.nominal.toFixed(2);
+                var dateFormatted = dateObj.format("DD/MM/YYYY");
+                var nominalFormatted = trans.amount;
                 /**
                  * Todo: 
                  * - Format nominal need to enhance
@@ -83,7 +87,7 @@ class HomePage extends Component {
                     <Layout>
                       <Text category='h6'>Transfer {dateFormatted}, Rp {nominalFormatted}</Text>
                       <Text category='p1'>{trans.bank_name}</Text>
-                      <Text category='p1'>{trans.status}</Text>
+                      <Text category='p1'>{trans.status_name}</Text>
                     </Layout>
                   </ListItem>
                 );

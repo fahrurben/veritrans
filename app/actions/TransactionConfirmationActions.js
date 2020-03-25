@@ -1,5 +1,5 @@
 import { checkStatus, parseJSON, getApiUrl, getHeaderForAjax, getHeaderForAjaxAsync } from '../services/ServiceHelper';
-import { TRANS_CONFIRM_INITIAL, TRANS_CONFIRM_GET_ALL_BANK, TRANS_CONFIRM_SUBMITTING, TRANS_CONFIRM_SUBMITTED } from '../Constants';
+import { TRANS_CONFIRM_INITIAL, TRANS_CONFIRM_GET_ALL_BANK, TRANS_CONFIRM_SUBMITTING, TRANS_CONFIRM_SUBMITTED, STATUS_SUCCESS, STATUS_ERROR } from '../Constants';
 
 
 const transConfirmInitial = () => {
@@ -28,27 +28,37 @@ const getAllBankByInstitution = (id) => {
   }
 }
 
-const submit = (registerObj) => {
+const submit = (formData) => {
   return async (dispatch) => {
-    console.log(registerObj);
-    let apiUrl = getApiUrl() +'/transaksi';
+    console.log(formData);
+    let apiUrl = getApiUrl() +'/transaction';
     
     dispatch({ type: TRANS_CONFIRM_SUBMITTING });
 
     fetch(apiUrl, {
       method: 'POST',
       headers: await getHeaderForAjaxAsync(),
-      body: JSON.stringify(registerObj)
+      body: JSON.stringify(formData)
     })
       .then(checkStatus)
       .then(parseJSON)
       .then((data) => {
         console.log(data);
-        dispatch({ type: TRANS_CONFIRM_SUBMITTED, payload: data });
+        dispatch({ type: TRANS_CONFIRM_SUBMITTED, 
+          payload: {
+            ...data,
+            status: STATUS_SUCCESS,
+          } 
+        });
       })
       .catch((data) => {
         console.log(data);
-        dispatch({ type: TRANS_CONFIRM_SUBMITTED, payload: data });
+        dispatch({ type: TRANS_CONFIRM_SUBMITTED,
+          payload: {
+            ...data,
+            status: STATUS_ERROR,
+          }  
+        });
       });
   }
 }

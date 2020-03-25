@@ -14,6 +14,8 @@ const getAllData = () => {
       .then(checkStatus)
       .then(parseJSON)
       .then((data) => {
+        console.log('success');
+        console.log(data);
         dispatch({ type: HOME_LIST_GET_DATA_DONE, payload: data });
       })
       .catch((error) => {

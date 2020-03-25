@@ -41,17 +41,32 @@ const submit = (loginObj) => {
         body: JSON.stringify(loginObj)
       });
 
-      console.log(response);
       if( response.status >= 200 && response.status < 300 ) {
         let data = await response.json();
-        if (data.status == STATUS_SUCCESS) {
-          await AsyncStorage.setItem('accessToken', data.api_token);
-        }
+        console.log(data);
+        await AsyncStorage.setItem('accessToken', data.api_token);
 
-        dispatch({ type: LOGIN_SUBMITTED, payload: data });
+        console.log('success');
+        dispatch({ type: LOGIN_SUBMITTED, 
+          payload: {
+            ...data,
+            status: STATUS_SUCCESS,
+          }
+        });
+      } else {
+        let data = await response.json();
+        dispatch({ type: LOGIN_SUBMITTED, 
+          payload: {
+            status: STATUS_ERROR,
+            message: data.message,
+          } 
+        });
       }
     } catch (error) {
-      console.log('error' + error);
+      console.log('Error');
+      dispatch({ type: LOGIN_SUBMITTED, payload: {
+        status: STATUS_ERROR,
+      } });
     }
   }
 }

@@ -10,11 +10,17 @@ export async function checkStatus(response) {
 }
 
 export function parseJSON(response) {
+  console.log(response);
   return response.json();
 }
 
 export function getApiUrl() {
-  let apiUrl = API_URL;
+  let apiUrl = 'http://192.168.122.1:82/veritrans/public';
+
+  if (process.env.NODE_ENV === "development") {
+    apiUrl = 'http://192.168.122.1:82/veritrans/public';
+  }
+
   console.log(apiUrl);
   apiUrl += '/api';
   return apiUrl;

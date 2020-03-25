@@ -5,6 +5,7 @@ import _ from 'lodash';
 import { Layout, Input, Text, Select, Button, Popover, Spinner, Modal, Datepicker } from '@ui-kitten/components';
 import { styles } from '../Styles';
 import { transConfirmInitial, getAllBankByInstitution, submit } from '../actions/TransactionConfirmationActions';
+import { getAllData } from '../actions/HomeActions';
 
 import {
   SUBMITTING,
@@ -80,16 +81,19 @@ class TransactionConfirmationPage extends Component {
       error.nominal == '' &&
       error.tanggal == ''
     ) {
+      let date = this.state.tanggal.toISOString().slice(0, 10);
+
       this.props.submit({
         bank_id: this.state.bankSelected.value,
         amount: this.state.nominal,
-        date: this.state.tanggal,
+        date: date,
       });
     }
   }
 
   redirectClick(e) {
     this.props.transConfirmInitial();
+    this.props.getAllData();
     this.props.navigation.navigate('Home');
   }
 
@@ -106,6 +110,8 @@ class TransactionConfirmationPage extends Component {
                     this.props.arrBank.map( bank => { return { value: bank.id, text: bank.name } });
     
     let loading = this.props.loading;
+    let status = this.props.status;
+    let message = this.props.message;
 
     return (
       <Layout style={styles.container}>
@@ -163,11 +169,11 @@ class TransactionConfirmationPage extends Component {
         >
           <Text></Text>
         </Popover>
-        <Modal visible={this.state.status == STATUS_SUCCESS} backdropStyle={styles.backdrop}>
+        <Modal visible={status == STATUS_SUCCESS} backdropStyle={styles.backdrop}>
           <Layout
             level='3'
             style={styles.modalContainer}>
-            <Text>{this.state.message}</Text>
+            <Text>{message}</Text>
             <Button onPress={this.redirectClick}>
               OK
             </Button>
@@ -189,6 +195,9 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { 
-    transConfirmInitial, getAllBankByInstitution, submit
+    transConfirmInitial, 
+    getAllBankByInstitution, 
+    submit,
+    getAllData
   }
 )(TransactionConfirmationPage);
