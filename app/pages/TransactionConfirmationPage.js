@@ -27,7 +27,7 @@ class TransactionConfirmationPage extends Component {
         nominal: '',
         tanggal: ''
       },
-      formStatus: props.formStatus
+      formStatus: props.formStatus,
     };
 
     this.submitClick = this.submitClick.bind(this);
@@ -38,7 +38,7 @@ class TransactionConfirmationPage extends Component {
 
     if (nextProps.formState == SUBMITTED && state.formState == SUBMITTING) {
       if (nextProps.status == STATUS_SUCCESS) {
-        console.log('Success');
+
       } else {
 
       }
@@ -93,7 +93,6 @@ class TransactionConfirmationPage extends Component {
 
   redirectClick(e) {
     this.props.transConfirmInitial();
-    this.props.getAllData();
     this.props.navigation.navigate('Home');
   }
 

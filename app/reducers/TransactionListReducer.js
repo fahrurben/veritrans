@@ -10,20 +10,19 @@ import {
 const initialState = {
   arrTransaction: [],
   loading: false,
-  status: STATUS_SUCCESS,
-  message: '',
 };
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case TRANS_LIST_INITIAL: 
+    case TRANS_LIST_GET_DATA:
       return {
         ...state,
-        loading: false,
+        loading: true,
       }
     case TRANS_LIST_GET_DATA_DONE: 
       return {
         ...state,
+        arrTransaction: action.payload,
         loading: false,
       }
     default:

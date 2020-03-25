@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { StyleSheet } from 'react-native';
 import _ from 'lodash';
+import { styles } from '../Styles';
 import { Layout, Input, Text, Select, Button, Popover, Spinner, Modal } from '@ui-kitten/components';
 import { registerInitial, getAllInstitusi, submit } from '../actions/RegisterActions';
 import {
@@ -118,6 +119,7 @@ class RegisterPage extends Component {
                     this.props.arrInstitusi.map( institusi => { return { value: institusi.id, text: institusi.name } });
     
     let loading = this.props.loading;
+    let status = this.props.status;
 
     return (
       <Layout style={styles.container}>
@@ -205,7 +207,7 @@ class RegisterPage extends Component {
         >
           <Text></Text>
         </Popover>
-        <Modal visible={this.state.status == STATUS_SUCCESS} backdropStyle={styles.backdrop}>
+        <Modal visible={status == STATUS_SUCCESS} backdropStyle={styles.backdrop}>
           <Layout
             level='3'
             style={styles.modalContainer}>
@@ -219,27 +221,6 @@ class RegisterPage extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-  },
-  select: {
-    marginBottom: 5,
-  },
-  submitButton: {
-    marginBottom: 5,
-  },
-  backdrop: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 256,
-    padding: 16,
-  },
-});
 
 const mapStateToProps = state => ({
   arrInstitusi: state.register.arrInstitusi,

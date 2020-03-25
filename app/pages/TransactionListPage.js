@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { StyleSheet } from 'react-native';
-import _ from 'lodash';
-import { Layout, Input, Text, Select, Button, Popover, Spinner, Modal } from '@ui-kitten/components';
+import { StyleSheet, ScrollView } from 'react-native';
+import _ from 'lodash';import moment from 'moment';
+moment.locale('id');
+import { Layout, Input, Text, Select, Button, Popover, Spinner, Modal, ListItem } from '@ui-kitten/components';
 import { styles } from '../Styles';
+import { getAllData } from '../actions/TransactionListActions';
 
 import {
   SUBMITTING,
@@ -20,17 +22,44 @@ class TransactionListPage extends Component {
 
   }
 
+  componentDidMount() {
+    this.props.getAllData();
+  }
+
   render() {
     const PopoverContent = () => (
       <Layout style={styles.popoverContent}>
         <Spinner size='giant'/>
       </Layout>
     );
-    
+
+    let arrTransaction = this.props.arrTransaction;
     let loading = this.props.loading;
 
     return (
       <Layout style={styles.container}>
+        <Text category='h5'>Daftar Transaksi</Text>
+        <ScrollView>
+        {
+          arrTransaction &&
+          arrTransaction.length > 0 &&
+          arrTransaction.map((trans, key) => {
+            var dateObj = moment(trans.date);
+            var dateFormatted = dateObj.format("DD/MM/YYYY");
+            var nominalFormatted = trans.amount;
+
+            return (
+              <ListItem key={key} style={styles.transList}>
+                <Layout>
+                  <Text category='h6'>Transfer {dateFormatted}, Rp {nominalFormatted}</Text>
+                  <Text category='p1'>{trans.bank_name}</Text>
+                  <Text category='p1'>{trans.status_name}</Text>
+                </Layout>
+              </ListItem>
+            );
+          })
+        }
+        </ScrollView>
         <Popover
           backdropStyle={styles.backdrop}
           visible={loading}
@@ -46,12 +75,11 @@ class TransactionListPage extends Component {
 const mapStateToProps = state => ({
   arrTransaction: state.transList.arrTransaction,
   loading: state.transList.loading,
-  status: state.transList.status,
-  message: state.transList.message,
 })
 
 export default connect(
   mapStateToProps,
   { 
+    getAllData,
   }
 )(TransactionListPage);

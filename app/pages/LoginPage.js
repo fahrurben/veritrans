@@ -27,6 +27,7 @@ class LoginPage extends Component {
     };
 
     this.submitClick = this.submitClick.bind(this);
+    this.redirectClick = this.redirectClick.bind(this);
   }
 
   componentDidMount() {
@@ -71,6 +72,10 @@ class LoginPage extends Component {
         password: this.state.password,
       });
     }
+  }
+
+  redirectClick(e) {
+    this.props.navigation.navigate('Home');
   }
 
   render() {

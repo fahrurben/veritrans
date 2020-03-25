@@ -28,17 +28,8 @@ class HomePage extends Component {
   }
 
   logoutClicked() {
-
     this.props.logout();
     this.props.navigation.navigate('Home');
-  }
-
-  componentDidMount() {
-    this.props.getAllData();
-  }
-
-  static getDerivedStateFromProps(nextProps, state) {
-    console.log('change page');
   }
 
   render() {
@@ -65,34 +56,12 @@ class HomePage extends Component {
             <Button onPress={() =>this.props.navigation.navigate('TransactionConfirmation')}>
               Konfirmasi Transfer
             </Button>
+            <Button onPress={() =>this.props.navigation.navigate('TransactionList')}>
+              Status Transfer
+            </Button>
             <Button status="basic" onPress={this.logoutClicked}>
               Logout
             </Button>
-            <Text category='h5'>Daftar Transaksi</Text>
-            {
-              arrTransaction &&
-              arrTransaction.length > 0 &&
-              arrTransaction.map((trans, key) => {
-                var dateObj = moment(trans.date);
-                var dateFormatted = dateObj.format("DD/MM/YYYY");
-                var nominalFormatted = trans.amount;
-                /**
-                 * Todo: 
-                 * - Format nominal need to enhance
-                 * - Status need to change to status name
-                 */
-
-                return (
-                  <ListItem key={key} style={styles.transList}>
-                    <Layout>
-                      <Text category='h6'>Transfer {dateFormatted}, Rp {nominalFormatted}</Text>
-                      <Text category='p1'>{trans.bank_name}</Text>
-                      <Text category='p1'>{trans.status_name}</Text>
-                    </Layout>
-                  </ListItem>
-                );
-              })
-            }
           </Layout>
         }
       </Layout>

@@ -1,5 +1,5 @@
 import { checkStatus, parseJSON, getApiUrl, getHeaderForAjax } from '../services/ServiceHelper';
-import { REGISTER_INITIAL, REGISTER_GET_ALL_INSTITUSI, REGISTER_SUBMITTING, REGISTER_SUBMITTED } from '../Constants';
+import { REGISTER_INITIAL, REGISTER_GET_ALL_INSTITUSI, REGISTER_SUBMITTING, REGISTER_SUBMITTED, STATUS_SUCCESS, STATUS_ERROR } from '../Constants';
 
 
 const registerInitial = () => {
@@ -41,10 +41,21 @@ const submit = (registerObj) => {
       .then(checkStatus)
       .then(parseJSON)
       .then((data) => {
-        dispatch({ type: REGISTER_SUBMITTED, payload: data });
+        console.log(data);
+        dispatch({ type: REGISTER_SUBMITTED,
+          payload: {
+            ...data,
+            status: STATUS_SUCCESS,
+          }  
+        });
       })
       .catch((data) => {
-        dispatch({ type: REGISTER_SUBMITTED, payload: data });
+        dispatch({ type: REGISTER_SUBMITTED,
+          payload: {
+            ...data,
+            status: STATUS_ERROR,
+          }  
+        });
       });
   }
 }
