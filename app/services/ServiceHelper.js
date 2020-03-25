@@ -1,5 +1,5 @@
-import { API_URL } from '../Constants';
 import { AsyncStorage } from 'react-native';
+import { API_URL } from 'react-native-dotenv';
 
 export async function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
@@ -15,6 +15,7 @@ export function parseJSON(response) {
 
 export function getApiUrl() {
   let apiUrl = API_URL;
+  console.log(apiUrl);
   apiUrl += '/api';
   return apiUrl;
 }
