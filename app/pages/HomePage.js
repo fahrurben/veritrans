@@ -79,7 +79,7 @@ class HomePage extends Component {
                  */
 
                 return (
-                  <ListItem key={key}>
+                  <ListItem key={key} style={styles.transList}>
                     <Layout>
                       <Text category='h6'>Transfer {dateFormatted}, Rp {nominalFormatted}</Text>
                       <Text category='p1'>{trans.bank_name}</Text>

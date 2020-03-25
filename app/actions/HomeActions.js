@@ -1,4 +1,4 @@
-import { checkStatus, parseJSON, getApiUrl, getHeaderForAjax } from '../services/ServiceHelper';
+import { checkStatus, parseJSON, getApiUrl, getHeaderForAjaxAsync } from '../services/ServiceHelper';
 import { HOME_LIST_GET_DATA, HOME_LIST_GET_DATA_DONE } from '../Constants';
 
 const getAllData = () => {
@@ -9,7 +9,7 @@ const getAllData = () => {
     let apiUrl = getApiUrl() +'/transaction';
     fetch(apiUrl, {
       method: 'GET',
-      headers: getHeaderForAjax(),
+      headers: await getHeaderForAjaxAsync(),
     })
       .then(checkStatus)
       .then(parseJSON)

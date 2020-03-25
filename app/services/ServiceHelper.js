@@ -1,4 +1,5 @@
 import { API_URL } from '../Constants';
+import { AsyncStorage } from 'react-native';
 
 export async function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
@@ -21,5 +22,14 @@ export function getApiUrl() {
 export function getHeaderForAjax() {
   return new Headers({
     'Content-Type': 'application/json',
+  });
+}
+
+export async function getHeaderForAjaxAsync() {
+  let apiToken = await AsyncStorage.getItem('accessToken');
+
+  return new Headers({
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + apiToken,
   });
 }

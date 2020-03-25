@@ -19,4 +19,8 @@ export const styles = StyleSheet.create({
     width: 256,
     padding: 16,
   },
+  transList: {
+    borderTopColor: 'black',
+    borderTopWidth: 1,
+  }
 });
