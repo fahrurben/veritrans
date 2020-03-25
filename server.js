@@ -66,8 +66,11 @@ export function makeServer({ environment = "development" } = {}) {
         return { status: 'success', message: 'Login sukses', api_token: '123' }
       });
 
-      this.get("/institusi/bank", schema => {
-        return schema.bankAccounts.all();
+      this.get("/institusi/bank/:id", schema => {
+        return [
+          { id: 1, institusi_id: 1, name: "Bank 1" },
+          { id: 2, institusi_id: 1, name: "Bank 2" },
+        ]
       });
 
       this.post("/transaksi", (schema, request) => {

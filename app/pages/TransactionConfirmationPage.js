@@ -81,9 +81,9 @@ class TransactionConfirmationPage extends Component {
       error.tanggal == ''
     ) {
       this.props.submit({
-        bank: this.state.bankSelected.value,
-        nominal: this.state.nominal,
-        tanggal: this.state.tanggal,
+        bank_id: this.state.bankSelected.value,
+        amount: this.state.nominal,
+        date: this.state.tanggal,
       });
     }
   }
@@ -103,7 +103,7 @@ class TransactionConfirmationPage extends Component {
 
     let arrBank = this.props.arrBank && 
                     this.props.arrBank.length > 0 &&
-                    this.props.arrBank.map( bank => { return { value: bank.code, text: bank.name } });
+                    this.props.arrBank.map( bank => { return { value: bank.id, text: bank.name } });
     
     let loading = this.props.loading;
 
@@ -115,7 +115,7 @@ class TransactionConfirmationPage extends Component {
           selectedOption={this.state.bankSelected}
           onSelect={
             (data) => {
-              let index = _.findIndex(arrBank, (obj) => { return obj.id == data.id });
+              let index = _.findIndex(arrBank, (obj) => { return obj.value == data.value });
               this.setState({
                 bankSelected: arrBank[index],
                 error: { ...this.state.error, bank: '' }

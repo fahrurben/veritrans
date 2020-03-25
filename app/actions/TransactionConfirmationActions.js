@@ -1,4 +1,4 @@
-import { checkStatus, parseJSON, getApiUrl, getHeaderForAjax } from '../services/ServiceHelper';
+import { checkStatus, parseJSON, getApiUrl, getHeaderForAjax, getHeaderForAjaxAsync } from '../services/ServiceHelper';
 import { TRANS_CONFIRM_INITIAL, TRANS_CONFIRM_GET_ALL_BANK, TRANS_CONFIRM_SUBMITTING, TRANS_CONFIRM_SUBMITTED } from '../Constants';
 
 
@@ -10,7 +10,7 @@ const transConfirmInitial = () => {
 
 const getAllBankByInstitution = (id) => {
   return async (dispatch) => {
-    let apiUrl = getApiUrl() +'/bank?institusiId='+id;
+    let apiUrl = getApiUrl() +'/institusi/bank/'+id;
     fetch(apiUrl, {
       method: 'GET',
       headers: getHeaderForAjax(),
@@ -19,7 +19,7 @@ const getAllBankByInstitution = (id) => {
       .then(parseJSON)
       .then((data) => {
         console.log(data);
-        dispatch({ type: TRANS_CONFIRM_GET_ALL_BANK, payload: data.bankAccounts });
+        dispatch({ type: TRANS_CONFIRM_GET_ALL_BANK, payload: data });
       })
       .catch((error) => {
         console.log(error);
@@ -37,7 +37,7 @@ const submit = (registerObj) => {
 
     fetch(apiUrl, {
       method: 'POST',
-      headers: getHeaderForAjax(),
+      headers: await getHeaderForAjaxAsync(),
       body: JSON.stringify(registerObj)
     })
       .then(checkStatus)
